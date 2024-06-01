@@ -22,7 +22,7 @@ class Owner {
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json['id'],
         name: json['nome'],
-        birthDate: DateTime.parse(json['dataNascimento:']),
+        birthDate: DateTime.parse(json['dataNascimento']),
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
       );
@@ -58,6 +58,51 @@ class OwnerProvider extends ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception('Failed to load Owners!');
+    }
+  }
+
+  Future<void> addOwner(Owner owner) async {
+    const url = 'http://$localhost:3000/owner/add';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(owner.toJsonToAdd()),
+    );
+
+    if (response.statusCode == 200) {
+      owners.add(owner);
+      notifyListeners();
+    } else {
+      // print("Respones status: ${response.statusCode}");
+      // print("Respones body: ${response.body}");
+      throw Exception('Failed to add owner!');
+    }
+  }
+
+  Future<void> removeOwner(int ownerId) async {
+    final url = 'http://$localhost:3000/owner/remove/$ownerId';
+    final response = await http.delete(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      owners.removeWhere((owner) => owner.id == ownerId);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to remove owner!');
+    }
+  }
+
+  Future<void> updateOwner(int ownerId, Owner newOwnerDatas) async {
+    final url = 'http://$localhost:3000/owner/update/$ownerId';
+    final response = await http.put(Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(newOwnerDatas.toJson()));
+
+    if (response.statusCode == 200) {
+      final ownerIndex = owners.indexWhere((owner) => owner.id == ownerId);
+      owners[ownerIndex] = newOwnerDatas;
+      notifyListeners();
+    } else {
+      throw Exception('Failed to update owner!');
     }
   }
 }
