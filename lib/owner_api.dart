@@ -29,15 +29,15 @@ class Owner {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'birthDate': birthDate.toIso8601String(),
+        'nome': name,
+        'dataNascimento': birthDate.toIso8601String(),
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String()
       };
 
   Map<String, dynamic> toJsonToAdd() => {
-        'name': name,
-        'birthDate': birthDate.toIso8601String(),
+        'nome': name,
+        'dataNascimento': birthDate.toIso8601String(),
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String()
       };
