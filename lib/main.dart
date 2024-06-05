@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:ads_atividade_2/owner/owner_api.dart';
-import 'package:ads_atividade_2/owner/list.dart';
+import 'package:ads_atividade_2/owner/list_page.dart';
 
 void main() {
   runApp(const MyApp());
