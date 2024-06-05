@@ -73,8 +73,6 @@ class OwnerProvider extends ChangeNotifier {
       owners.add(owner);
       notifyListeners();
     } else {
-      // print("Respones status: ${response.statusCode}");
-      // print("Respones body: ${response.body}");
       throw Exception('Failed to add owner!');
     }
   }
