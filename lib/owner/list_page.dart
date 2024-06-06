@@ -1,3 +1,4 @@
+import 'package:ads_atividade_2/owner/edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,8 +52,7 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
                       children: [
                         IconButton(
                             icon: const Icon(Icons.edit),
-                            // onPressed: () => navigateToEdit(owner.id) 
-                            onPressed: () {} 
+                            onPressed: () => navigateToEdit(owner.id) 
                           ),
                         IconButton(
                             icon: const Icon(Icons.delete), 
@@ -71,12 +71,12 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
       );
   }
 
-  // void navigateToEdit(int ownerId) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const EditOwnerPage())
-  //   );
-  // }
+  void navigateToEdit(int ownerId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UpdateOwnerPage(ownerId: ownerId))
+    );
+  }
 
   void navigateToAdd() {
     Navigator.push(
