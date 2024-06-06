@@ -4,20 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:ads_atividade_2/const.dart';
 
-class OwnertoAdd {
-  final String name;
-  final DateTime birthDate;
-
-  OwnertoAdd({
-    required this.name,
-    required this.birthDate,
-  });
-}
-
 class Owner{
   int id;
   final String name;
-  final DateTime birthDate;
+  final String birthDate;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -40,7 +30,7 @@ class Owner{
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json['id'],
         name: json['nome'],
-        birthDate: DateTime.parse(json['dataNascimento']),
+        birthDate: json['dataNascimento'],
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
       );
@@ -48,14 +38,14 @@ class Owner{
   Map<String, dynamic> toJson() => {
         'id': id,
         'nome': name,
-        'dataNascimento': birthDate.toIso8601String(),
+        'dataNascimento': birthDate,
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String()
       };
 
   Map<String, dynamic> toJsonToAdd() => {
         'nome': name,
-        'dataNascimento': birthDate.toIso8601String(),
+        'dataNascimento': birthDate,
       };
 }
 

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -6,14 +5,14 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 import 'package:ads_atividade_2/owner/owner_api.dart';
 
-class AddOwnerPage extends StatefulWidget {
-  const AddOwnerPage({super.key});
+class AddTaskPage extends StatefulWidget {
+  const AddTaskPage({super.key});
 
   @override
-  State<AddOwnerPage> createState() => _AddOwnerPageState();
+  State<AddTaskPage> createState() => _AddTaskPageState();
 }
 
-class _AddOwnerPageState extends State<AddOwnerPage> {
+class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController _nameControlle = TextEditingController();
   DateTime birthDate = DateTime.now();
 
@@ -37,9 +36,8 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime.utc(2015,1,1),
-                            maxTime: DateTime.now(),
-                            onConfirm: (date) => birthDate = DateTime(date.year, date.month, date.day));
+                            minTime: DateTime.now(),
+                            onConfirm: (date) => birthDate = date);
                       },
                       child: Text(birthDate.toString()),
                     )
@@ -48,28 +46,16 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                 ElevatedButton(
                     onPressed: () {
                       final owner = Owner.withoutId(
-                          name: _nameControlle.text, 
-                          birthDate: DateFormat('dd/MM/yyyy').format(birthDate)
-                        );
+                          name: _nameControlle.text, birthDate: DateFormat('yyyy-MM-dd').format(birthDate));
 
-                      ownerCurrentProvider.addOwner(owner).then((_) {
-                        Navigator.pop(context);
-                        ownerCurrentProvider.fetchOwner();
-                      }).catchError((onError) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Error Adding Owner!"),
-                            content: Text('Error: ${owner.birthDate}'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context), 
-                                child: const Text('Ok')
-                                )
-                            ],
-                          )
-                        );
-                      });
+                      ownerCurrentProvider.addOwner(owner)
+                        .then((_) {
+                          Navigator.pop(context);
+                          ownerCurrentProvider.fetchOwner();
+                        })
+                        .catchError((onError) {
+
+                        });
                     },
                     child: const Text("Add Owner"))
               ])),

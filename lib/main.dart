@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/owner/list_page.dart';
+import 'package:ads_atividade_2/task/task_api.dart';
+import 'package:ads_atividade_2/task/list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,17 +16,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<OwnerProvider>(
-        create: (_) => OwnerProvider(),
-        child: MaterialApp(
-            title: 'First App Flutter',
-            theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-                useMaterial3: true),
-            home: const MyHomePage()));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<OwnerProvider>(create: (_)=> OwnerProvider()),
+        ChangeNotifierProvider<TaskProvider>(create: (_)=> TaskProvider())
+      ],
+      child: MaterialApp(
+          title: 'First App Flutter',
+          theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+              useMaterial3: true),
+          home: const MyHomePage()));
   }
 }
-
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -56,7 +60,16 @@ class MyHomePage extends StatelessWidget {
               Expanded(
                 child: ElevatedButton(
                   child: const Text("Tasks"),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Consumer<TaskProvider>(
+                                  builder: (context, taskProvider, child) {
+                                    return const ListTasksPage();
+                                  },
+                                )));
+                  },
                 ),
               )
             ],

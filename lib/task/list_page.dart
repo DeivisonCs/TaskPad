@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
-import 'package:ads_atividade_2/owner/owner_api.dart';
-import 'package:ads_atividade_2/owner/add_page.dart';
+import 'package:ads_atividade_2/task/task_api.dart';
+import 'package:ads_atividade_2/task/add_page.dart';
 
-class ListOwnersPage extends StatefulWidget {
-  const ListOwnersPage({super.key});
+class ListTasksPage extends StatefulWidget {
+  const ListTasksPage({super.key});
 
   @override
-  State<ListOwnersPage> createState() => _ListOwnersPageState();
+  State<ListTasksPage> createState() => _ListTasksPageState();
 }
 
-class _ListOwnersPageState extends State<ListOwnersPage> {
+class _ListTasksPageState extends State<ListTasksPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<OwnerProvider>(context, listen: false).fetchOwner();
+    Provider.of<TaskProvider>(context, listen: false).fetchTask();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ownerProvider = Provider.of<OwnerProvider>(context);
+    final taskProvider = Provider.of<TaskProvider>(context);
 
     return Scaffold(
         appBar: AppBar(title: const Text("TaskPad")),
-        body: ownerProvider.owners.isEmpty
+        body: taskProvider.tasks.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
-              itemCount: ownerProvider.owners.length,
+              itemCount: taskProvider.tasks.length,
               itemBuilder: (context, index) {
-                final owner = ownerProvider.owners[index];
+                final task = taskProvider.tasks[index];
 
                 return ListTile(
-                    title: Text(owner.name,
+                    title: Text(task.title,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     subtitle: Column(
@@ -40,7 +41,7 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
                       children: [
                         Row(children: [
                           Text(
-                              "BirthDate: ${owner.birthDate}",
+                              "Deadline: ${DateFormat('yyyy-MM-dd').format(task.deadline)}",
                               style: const TextStyle(fontSize: 16))
                         ])
                       ],
@@ -51,12 +52,12 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
                       children: [
                         IconButton(
                             icon: const Icon(Icons.edit),
-                            // onPressed: () => navigateToEdit(owner.id) 
+                            // onPressed: () => navigateToEdit(task.id) 
                             onPressed: () {} 
                           ),
                         IconButton(
                             icon: const Icon(Icons.delete), 
-                            onPressed: () => ownerProvider.removeOwner(owner.id)
+                            onPressed: () => taskProvider.removeTask(task.id)
                           )
                       ],
                     )
@@ -71,17 +72,17 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
       );
   }
 
-  // void navigateToEdit(int ownerId) {
+  // void navigateToEdit(int taskId) {
   //   Navigator.push(
   //     context,
-  //     MaterialPageRoute(builder: (context) => const EditOwnerPage())
+  //     MaterialPageRoute(builder: (context) => const EditTaskPage())
   //   );
   // }
 
   void navigateToAdd() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AddOwnerPage())
+      MaterialPageRoute(builder: (context) => const AddTaskPage())
     );
   }
 }
