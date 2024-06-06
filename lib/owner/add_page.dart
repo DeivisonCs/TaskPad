@@ -55,12 +55,12 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                       ownerCurrentProvider.addOwner(owner).then((_) {
                         Navigator.pop(context);
                         ownerCurrentProvider.fetchOwner();
-                      }).catchError((onError) {
+                      }).catchError((error) {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text("Error Adding Owner!"),
-                            content: Text('Error: ${owner.birthDate}'),
+                            content: Text('Error: $error'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context), 
