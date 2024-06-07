@@ -55,7 +55,7 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
                           minTime: DateTime.utc(2015, 1, 1),
                           maxTime: DateTime.now(), onConfirm: (date) {
                         setState(() {
-                          birthDate = DateFormat('dd/MM/yyyy').format(date);
+                          birthDate = DateFormat('yyyy-MM-dd').format(date);
                         });
                       });
                     },
@@ -66,8 +66,9 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
               ),
               ElevatedButton(
                   onPressed: () {
+                    DateTime parsedBirthDate = DateTime.parse(birthDate==''?currentOwner.birthDate:birthDate);
                     final newOwnerDatas = Owner.withoutId(
-                        name: _nameController.text, birthDate: birthDate);
+                        name: _nameController.text, birthDate: DateFormat('dd-MM-yyyy').format(parsedBirthDate));
 
                     ownerCurrentProvider
                         .updateOwner(currentOwner.id, newOwnerDatas)
