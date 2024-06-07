@@ -99,7 +99,7 @@ class OwnerProvider extends ChangeNotifier {
     final url = 'http://$localhost:3000/owner/update/$ownerId';
     final response = await http.put(Uri.parse(url),
         headers: {"Content-Type": "application/json"},
-        body: json.encode(newOwnerDatas.toJson()));
+        body: json.encode(newOwnerDatas.toJsonToAdd()));
 
     if (response.statusCode == 200) {
       final ownerIndex = owners.indexWhere((owner) => owner.id == ownerId);

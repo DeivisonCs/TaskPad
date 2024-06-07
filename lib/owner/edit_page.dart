@@ -23,7 +23,9 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
     Provider.of<OwnerProvider>(context, listen: false).fetchOwner();
     ownerToUpdateId = widget.ownerId;
   }
+
   String birthDate = '';
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,7 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
     final currentOwner = ownerCurrentProvider.owners
         .firstWhere((owner) => owner.id == ownerToUpdateId);
 
-    final TextEditingController _nameController =
-        TextEditingController(text: currentOwner.name);
-    
+    if (_nameController.text == '') _nameController.text = currentOwner.name;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Owner")),
@@ -59,7 +59,8 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
                         });
                       });
                     },
-                    child: Text(birthDate==''?currentOwner.birthDate:birthDate),
+                    child: Text(
+                        birthDate == '' ? currentOwner.birthDate : birthDate),
                   )
                 ],
               ),
