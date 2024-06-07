@@ -66,9 +66,12 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    DateTime parsedBirthDate = DateTime.parse(birthDate==''?currentOwner.birthDate:birthDate);
+                    DateTime parsedBirthDate = DateTime.parse(
+                        birthDate == '' ? currentOwner.birthDate : birthDate);
                     final newOwnerDatas = Owner.withoutId(
-                        name: _nameController.text, birthDate: DateFormat('dd-MM-yyyy').format(parsedBirthDate));
+                        name: _nameController.text,
+                        birthDate:
+                            DateFormat('dd-MM-yyyy').format(parsedBirthDate));
 
                     ownerCurrentProvider
                         .updateOwner(currentOwner.id, newOwnerDatas)
