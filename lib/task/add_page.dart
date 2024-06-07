@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
+import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/owner/owner_api.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -13,11 +14,15 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  final TextEditingController _nameControlle = TextEditingController();
-  DateTime birthDate = DateTime.now();
+  final TextEditingController _titleControlle = TextEditingController();
+  final TextEditingController _descriptioControlle = TextEditingController();
+  String deadline = '';
+  int taskOwner = -1;
+  String taskStatus = '';
 
   @override
   Widget build(BuildContext context) {
+    final taskCurrentProvider = Provider.of<TaskProvider>(context);
     final ownerCurrentProvider = Provider.of<OwnerProvider>(context);
 
     return Scaffold(
@@ -27,38 +32,104 @@ class _AddTaskPageState extends State<AddTaskPage> {
               padding: const EdgeInsets.all(15.0),
               child: Column(children: [
                 TextField(
-                    controller: _nameControlle,
-                    decoration: const InputDecoration(labelText: 'Name')),
+                    controller: _titleControlle,
+                    decoration: const InputDecoration(labelText: 'Title')),
+
+                const SizedBox(height: 20,),
+
+                TextField(
+                    controller: _descriptioControlle,
+                    decoration:
+                        const InputDecoration(labelText: 'Description')),
+
+                const SizedBox(height: 20,),
+
                 Row(
                   children: [
-                    const Text("Birth Date: "),
+                    DropdownButton(
+                      value: taskOwner == -1 ? null : taskOwner,
+                      hint: const Text("Select Owner"),
+                      items: ownerCurrentProvider.owners.map((owner) {
+                        return DropdownMenuItem(
+                          value: owner.id,
+                          child: Text(owner.name)
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          // Value arrives as an Object 
+                          taskOwner = int.parse(value.toString());
+                        });
+                      },
+                    ),
+
+                    const SizedBox(width: 30,),
+
+                    DropdownButton(
+                      value: taskStatus == '' ?null : taskStatus,
+                      hint: const Text("Select Task Status"),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'true',
+                          child: Text("Finished"),
+                        ),
+                        DropdownMenuItem(
+                          value: 'false',
+                          child: Text("Pending"),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          taskStatus = value!;
+                        });
+                      },
+                    ),
+                  ]
+                ),
+                const SizedBox(height: 20,),
+                Row(
+                  children: [
+                    const Text("Deadline: "),
                     TextButton(
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime.now(),
-                            onConfirm: (date) => birthDate = date);
+                            minTime: DateTime.now(), onConfirm: (date) {
+                          setState(() {
+                            deadline = DateFormat('dd/MM/yyyy').format(date);
+                          });
+                        });
                       },
-                      child: Text(birthDate.toString()),
+                      child: Text(deadline == '' ? 'Select a Date' : deadline),
                     )
                   ],
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      final owner = Owner.withoutId(
-                          name: _nameControlle.text, birthDate: DateFormat('yyyy-MM-dd').format(birthDate));
+                // ElevatedButton(
+                //     onPressed: () {
+                //       final owner = Task.withoutId(
+                //           idOwner: taskOwner, deadline: deadline);
 
-                      ownerCurrentProvider.addOwner(owner)
-                        .then((_) {
-                          Navigator.pop(context);
-                          ownerCurrentProvider.fetchOwner();
-                        })
-                        .catchError((onError) {
-
-                        });
-                    },
-                    child: const Text("Add Owner"))
+                //       taskCurrentProvider.addOwner(owner).then((_) {
+                //         Navigator.pop(context);
+                //         taskCurrentProvider.fetchAllOwners();
+                //       }).catchError((error) {
+                //         showDialog(
+                //             context: context,
+                //             builder: (context) => AlertDialog(
+                //                   title: const Text("Failed to add owner!"),
+                //                   content: Text('Error: $error $birthDate'),
+                //                   actions: [
+                //                     TextButton(
+                //                         onPressed: () => Navigator.pop(context),
+                //                         child: const Text('Ok'))
+                //                   ],
+                //                 ));
+                //       });
+                //     },
+                //     child: const Text("Add Owner")
+                //   )
               ])),
-        ));
+        )  
+    );
   }
 }

@@ -55,7 +55,7 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
 
                       ownerCurrentProvider.addOwner(owner).then((_) {
                         Navigator.pop(context);
-                        ownerCurrentProvider.fetchOwner();
+                        ownerCurrentProvider.fetchAllOwners();
                       }).catchError((error) {
                         showDialog(
                             context: context,

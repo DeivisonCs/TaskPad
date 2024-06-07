@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
+import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/task/add_page.dart';
 
@@ -17,11 +18,13 @@ class _ListTasksPageState extends State<ListTasksPage> {
   void initState() {
     super.initState();
     Provider.of<TaskProvider>(context, listen: false).fetchTask();
+    Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
   }
 
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
+    final ownerProvider = Provider.of<OwnerProvider>(context);
 
     return Scaffold(
         appBar: AppBar(title: const Text("TaskPad")),
@@ -39,10 +42,17 @@ class _ListTasksPageState extends State<ListTasksPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                          Text(
+                            "Owner: ${ownerProvider.owners.firstWhere((item) => item.id == task.idOwner).name}",
+                            style: const TextStyle(fontSize: 16)
+                            ),
                           Text(
                               "Deadline: ${DateFormat('yyyy-MM-dd').format(task.deadline)}",
-                              style: const TextStyle(fontSize: 16))
+                              style: const TextStyle(fontSize: 16)
+                            )
                         ])
                       ],
                     ),

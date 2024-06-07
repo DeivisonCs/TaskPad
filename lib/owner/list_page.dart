@@ -16,7 +16,7 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<OwnerProvider>(context, listen: false).fetchOwner();
+    Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
   }
 
   @override

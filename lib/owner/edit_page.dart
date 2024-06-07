@@ -20,7 +20,7 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<OwnerProvider>(context, listen: false).fetchOwner();
+    Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
     ownerToUpdateId = widget.ownerId;
   }
 
@@ -77,7 +77,7 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
                         .updateOwner(currentOwner.id, newOwnerDatas)
                         .then((_) {
                       Navigator.pop(context);
-                      ownerCurrentProvider.fetchOwner();
+                      ownerCurrentProvider.fetchAllOwners();
                     }).catchError((error) {
                       showDialog(
                           context: context,

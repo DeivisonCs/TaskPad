@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:ads_atividade_2/const.dart';
 
-class Owner{
+class Owner {
   int id;
   final String name;
   final String birthDate;
@@ -18,14 +18,13 @@ class Owner{
     required this.createdAt,
     required this.updatedAt,
   });
-  
+
   Owner.withoutId({
     required this.name,
     required this.birthDate,
-  })
-  : id=-1,
-    createdAt=DateTime.now(),
-    updatedAt=DateTime.now(); 
+  })  : id = -1,
+        createdAt = DateTime.now(),
+        updatedAt = DateTime.now();
 
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json['id'],
@@ -52,7 +51,7 @@ class Owner{
 class OwnerProvider extends ChangeNotifier {
   List<Owner> owners = [];
 
-  Future<void> fetchOwner() async {
+  Future<void> fetchAllOwners() async {
     const url = 'http://$localhost:3000/owner/list';
     final response = await http.get(Uri.parse(url));
 
