@@ -8,9 +8,9 @@ class Task{
   int id;
   final int idOwner;
   final String title;
-  final String description;
-  final DateTime deadline;
-  final bool isComplete;
+  final String? description;
+  final String deadline;
+  final String isComplete;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -30,9 +30,9 @@ class Task{
     required this.title,
     required this.deadline,
     required this.isComplete,
+    this.description=''
   })
   : id=-1,
-    description='',
     createdAt=DateTime.now(),
     updatedAt=DateTime.now(); 
 
@@ -41,8 +41,8 @@ class Task{
         idOwner: json['responsavelId'],
         title: json['titulo'],
         description: json['descricao'],
-        isComplete: json['isComplete'],
-        deadline: DateTime.parse(json['dataLimite']),
+        isComplete: json['isComplete'].toString(),
+        deadline: json['dataLimite'],
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
       );
@@ -53,7 +53,7 @@ class Task{
         'titulo': title,
         'descricao': description,
         'isComplete': isComplete,
-        'dataLimite': deadline.toIso8601String(),
+        'dataLimite': deadline,
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String()
       };
@@ -63,14 +63,14 @@ class Task{
         'titulo': title,
         'descricao': description,
         'isComplete': isComplete,
-        'dataLimite': deadline.toIso8601String(),
+        'dataLimite': deadline,
       };
 }
 
 class TaskProvider extends ChangeNotifier {
   List<Task> tasks = [];
 
-  Future<void> fetchTask() async {
+  Future<void> fetchAllTasks() async {
     const url = 'http://$localhost:3000/task/list';
     final response = await http.get(Uri.parse(url));
 
@@ -81,7 +81,7 @@ class TaskProvider extends ChangeNotifier {
       tasks = ownerData.map((item) => Task.fromJson(item)).toList();
       notifyListeners();
     } else {
-      throw Exception('Failed to load tasks!');
+      throw Exception('Failed to load tasks! \n Error: ${response.body}');
     }
   }
 
@@ -93,11 +93,11 @@ class TaskProvider extends ChangeNotifier {
       body: json.encode(newTask.toJsonToAdd()),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       tasks.add(newTask);
       notifyListeners();
     } else {
-      throw Exception('Failed to add task!');
+      throw Exception('Failed to add task!  \n Error: ${response.body}');
     }
   }
 
@@ -109,7 +109,7 @@ class TaskProvider extends ChangeNotifier {
       tasks.removeWhere((task) => task.id == taskId);
       notifyListeners();
     } else {
-      throw Exception('Failed to remove task!');
+      throw Exception('Failed to remove task!  \n Error: ${response.body}');
     }
   }
 

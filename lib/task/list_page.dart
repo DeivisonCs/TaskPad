@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/task/task_api.dart';
@@ -17,7 +16,7 @@ class _ListTasksPageState extends State<ListTasksPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TaskProvider>(context, listen: false).fetchTask();
+    Provider.of<TaskProvider>(context, listen: false).fetchAllTasks();
     Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
   }
 
@@ -50,7 +49,7 @@ class _ListTasksPageState extends State<ListTasksPage> {
                             style: const TextStyle(fontSize: 16)
                             ),
                           Text(
-                              "Deadline: ${DateFormat('yyyy-MM-dd').format(task.deadline)}",
+                              "Deadline: ${task.deadline}",
                               style: const TextStyle(fontSize: 16)
                             )
                         ])
