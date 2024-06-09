@@ -6,7 +6,8 @@ import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/task/add_page.dart';
 
 class ListTasksPage extends StatefulWidget {
-  const ListTasksPage({super.key});
+  final int ownerId;
+  const ListTasksPage({super.key, required this.ownerId});
 
   @override
   State<ListTasksPage> createState() => _ListTasksPageState();
@@ -16,7 +17,12 @@ class _ListTasksPageState extends State<ListTasksPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TaskProvider>(context, listen: false).fetchAllTasks();
+
+    if (widget.ownerId == -1) {
+      Provider.of<TaskProvider>(context, listen: false).fetchAllTasks();
+    } else {
+      Provider.of<TaskProvider>(context, listen: false).fetchOwnerTasks(widget.ownerId);
+    }
     Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
   }
 
@@ -26,8 +32,8 @@ class _ListTasksPageState extends State<ListTasksPage> {
     final ownerProvider = Provider.of<OwnerProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(title: const Text("TaskPad")),
-        body: taskProvider.tasks.isEmpty
+      appBar: AppBar(title: const Text("TaskPad")),
+      body: taskProvider.tasks.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: taskProvider.tasks.length,
@@ -35,50 +41,41 @@ class _ListTasksPageState extends State<ListTasksPage> {
                 final task = taskProvider.tasks[index];
 
                 return ListTile(
-                    title: Text(task.title,
+                    title: 
+                    Text(task.title,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                          Text(
-                            "Owner: ${ownerProvider.owners.firstWhere((item) => item.id == task.idOwner).name}",
-                            style: const TextStyle(fontSize: 16)
-                            ),
-                          Text(
-                              "Deadline: ${task.deadline}",
-                              style: const TextStyle(fontSize: 16)
-                            )
-                        ])
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "Owner: ${ownerProvider.owners.firstWhere((item) => item.id == task.idOwner).name}",
+                                  style: const TextStyle(fontSize: 16)),
+                              Text("Deadline: ${task.deadline}",
+                                  style: const TextStyle(fontSize: 16))
+                            ])
                       ],
                     ),
-                    
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                             icon: const Icon(Icons.edit),
-                            // onPressed: () => navigateToEdit(task.id) 
-                            onPressed: () {} 
-                          ),
+                            // onPressed: () => navigateToEdit(task.id)
+                            onPressed: () {}),
                         IconButton(
-                            icon: const Icon(Icons.delete), 
-                            onPressed: () => taskProvider.removeTask(task.id)
-                          )
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => taskProvider.removeTask(task.id))
                       ],
-                    )
-                  );
+                    ));
               },
             ),
-
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () => navigateToAdd()
-        ),
-      );
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add), onPressed: () => navigateToAdd()),
+    );
   }
 
   // void navigateToEdit(int taskId) {
@@ -90,8 +87,6 @@ class _ListTasksPageState extends State<ListTasksPage> {
 
   void navigateToAdd() {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddTaskPage())
-    );
+        context, MaterialPageRoute(builder: (context) => const AddTaskPage()));
   }
 }

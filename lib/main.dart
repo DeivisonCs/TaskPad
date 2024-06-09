@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => Consumer<TaskProvider>(
                                   builder: (context, taskProvider, child) {
-                                    return const ListTasksPage();
+                                    return const ListTasksPage(ownerId: -1);
                                   },
                                 )));
                   },

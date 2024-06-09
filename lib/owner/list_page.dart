@@ -2,6 +2,7 @@ import 'package:ads_atividade_2/owner/edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ads_atividade_2/task/list_page.dart';
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/owner/add_page.dart';
 
@@ -33,9 +34,14 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
                 final owner = ownerProvider.owners[index];
 
                 return ListTile(
-                    title: Text(owner.name,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    title: InkWell(
+                      onTap: () => navigateToOwnerTasks(owner.id),
+                      child: Text(owner.name,
+                          style: const TextStyle(
+                          fontSize: 20, 
+                          fontWeight: FontWeight.bold)
+                        ) ,
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -82,6 +88,13 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AddOwnerPage())
+    );
+  }
+
+  void navigateToOwnerTasks(int ownerId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ListTasksPage(ownerId: ownerId))
     );
   }
 }

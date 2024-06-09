@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:ads_atividade_2/const.dart';
 
-class Task{
+class Task {
   int id;
   final int idOwner;
   final String title;
@@ -24,17 +24,16 @@ class Task{
     required this.createdAt,
     required this.updatedAt,
   });
-  
-  Task.withoutId({
-    required this.idOwner,
-    required this.title,
-    required this.deadline,
-    required this.isComplete,
-    this.description=''
-  })
-  : id=-1,
-    createdAt=DateTime.now(),
-    updatedAt=DateTime.now(); 
+
+  Task.withoutId(
+      {required this.idOwner,
+      required this.title,
+      required this.deadline,
+      required this.isComplete,
+      this.description = ''})
+      : id = -1,
+        createdAt = DateTime.now(),
+        updatedAt = DateTime.now();
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(
         id: json['id'],
@@ -85,6 +84,21 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchOwnerTasks(int ownerId) async {
+    final url = 'http://$localhost:3000/task/list?from=$ownerId';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> taskData = data['tarefas'];
+
+      tasks = taskData.map((task) => Task.fromJson(task)).toList();
+      notifyListeners();
+    } else {
+      throw Exception('Failed to load tasks! \n Error: ${response.body}');
+    }
+  }
+
   Future<void> addTask(Task newTask) async {
     const url = 'http://$localhost:3000/task/add';
     final response = await http.post(
@@ -97,7 +111,7 @@ class TaskProvider extends ChangeNotifier {
       tasks.add(newTask);
       notifyListeners();
     } else {
-      throw Exception('Failed to add task!  \n Error: ${response.body}');
+      throw Exception('Failed to add task! \n Error: ${response.body}');
     }
   }
 
