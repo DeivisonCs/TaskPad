@@ -42,7 +42,8 @@ class _ListTasksPageState extends State<ListTasksPage> {
 
                 return ListTile(
                     title: 
-                    Text(task.title,
+                    Text(
+                      task.title,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     subtitle: Column(
@@ -56,7 +57,15 @@ class _ListTasksPageState extends State<ListTasksPage> {
                                   style: const TextStyle(fontSize: 16)),
                               Text("Deadline: ${task.deadline}",
                                   style: const TextStyle(fontSize: 16))
-                            ])
+                            ]),
+                            Row(
+                              children: [
+                                ColoredCircle(color: task.isComplete=='true'?Colors.green:Colors.red),
+                                const SizedBox(width: 7),
+                                Text(task.isComplete=='true'?'Completed':'Pending'),
+                                const SizedBox(height: 20),
+                              ],
+                            )
                       ],
                     ),
                     trailing: Row(
@@ -69,8 +78,9 @@ class _ListTasksPageState extends State<ListTasksPage> {
                         IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () => taskProvider.removeTask(task.id))
-                      ],
-                    ));
+                      ]
+                    )
+                    );
               },
             ),
       floatingActionButton: FloatingActionButton(
@@ -88,5 +98,24 @@ class _ListTasksPageState extends State<ListTasksPage> {
   void navigateToAdd() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AddTaskPage()));
+  }
+}
+
+
+class ColoredCircle extends StatelessWidget{
+  final Color color;
+  
+  const ColoredCircle({super.key, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+    );
   }
 }
