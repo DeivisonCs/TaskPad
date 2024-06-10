@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/task/add_page.dart';
+import 'package:ads_atividade_2/task/task_page.dart';
 
 class ListTasksPage extends StatefulWidget {
   final int ownerId;
@@ -41,11 +42,14 @@ class _ListTasksPageState extends State<ListTasksPage> {
                 final task = taskProvider.tasks[index];
 
                 return ListTile(
-                    title: 
-                    Text(
-                      task.title,
+                    title: InkWell(
+                      onTap: () => navigateToTaskPage(task.id),
+                      child: Text(
+                        task.title,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                            fontSize: 20, fontWeight: FontWeight.bold)
+                      )
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -98,6 +102,11 @@ class _ListTasksPageState extends State<ListTasksPage> {
   void navigateToAdd() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AddTaskPage()));
+  }
+
+  void navigateToTaskPage(int taskId) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => TaskPage(taskId: taskId)));
   }
 }
 
