@@ -94,7 +94,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             showTitleActions: true,
                             minTime: DateTime.now(), onConfirm: (date) {
                           setState(() {
-                            deadline = DateFormat('dd/MM/yyyy').format(date);
+                            deadline = DateFormat('yyyy-MM-dd').format(date);
                           });
                         });
                       },
