@@ -61,7 +61,7 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: const Text("Failed to add owner!"),
-                                  content: Text(error),
+                                  content: Text('$error'),
                                   actions: [
                                     TextButton(
                                         onPressed: () => Navigator.pop(context),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/task/add_page.dart';
+import 'package:ads_atividade_2/task/edit_page.dart';
 import 'package:ads_atividade_2/task/task_page.dart';
 
 import 'package:ads_atividade_2/components/colored_circle.dart';
@@ -79,8 +80,8 @@ class _ListTasksPageState extends State<ListTasksPage> {
                       children: [
                         IconButton(
                             icon: const Icon(Icons.edit),
-                            // onPressed: () => navigateToEdit(task.id)
-                            onPressed: () {}),
+                            onPressed: () => navigateToEdit(task.id)
+                          ),
                         IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () => taskProvider.removeTask(task.id))
@@ -94,12 +95,12 @@ class _ListTasksPageState extends State<ListTasksPage> {
     );
   }
 
-  // void navigateToEdit(int taskId) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const EditTaskPage())
-  //   );
-  // }
+  void navigateToEdit(int taskId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditTaskPage(taskId: taskId,))
+    );
+  }
 
   void navigateToAdd() {
     Navigator.push(

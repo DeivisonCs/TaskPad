@@ -83,7 +83,7 @@ class _UpdateOwnerPageState extends State<UpdateOwnerPage> {
                           context: context,
                           builder: (context) => AlertDialog(
                                 title: const Text("Failed to edit owner!"),
-                                content: Text(error),
+                                content: Text('$error'),
                                 actions: [
                                   TextButton(
                                       onPressed: () => Navigator.pop(context),

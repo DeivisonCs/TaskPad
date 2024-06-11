@@ -14,8 +14,8 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  final TextEditingController _titleControlle = TextEditingController();
-  final TextEditingController _descriptioControlle = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   String deadline = '';
   int taskOwner = -1;
   String taskStatus = '';
@@ -32,13 +32,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
               padding: const EdgeInsets.all(15.0),
               child: Column(children: [
                 TextField(
-                    controller: _titleControlle,
+                    controller: _titleController,
                     decoration: const InputDecoration(labelText: 'Title')),
                 const SizedBox(
                   height: 20,
                 ),
                 TextField(
-                    controller: _descriptioControlle,
+                    controller: _descriptionController,
                     decoration:
                         const InputDecoration(labelText: 'Description')),
                 const SizedBox(
@@ -106,8 +106,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     onPressed: () {
                       final task = Task.withoutId(
                           idOwner: taskOwner,
-                          title: _titleControlle.text,
-                          description: _descriptioControlle.text,
+                          title: _titleController.text,
+                          description: _descriptionController.text,
                           deadline: deadline,
                           isComplete: taskStatus);
 
