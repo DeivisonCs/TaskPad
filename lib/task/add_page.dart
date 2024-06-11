@@ -119,7 +119,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: const Text("Failed to add task!"),
-                                  content: Text('Error: $error'),
+                                  content: Text('$error'),
                                   actions: [
                                     TextButton(
                                         onPressed: () => Navigator.pop(context),

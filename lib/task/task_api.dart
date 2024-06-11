@@ -80,7 +80,9 @@ class TaskProvider extends ChangeNotifier {
       tasks = ownerData.map((item) => Task.fromJson(item)).toList();
       notifyListeners();
     } else {
-      throw Exception('Failed to load tasks! \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to load tasks! \n Error: $errorMessage');
     }
   }
 
@@ -95,7 +97,9 @@ class TaskProvider extends ChangeNotifier {
       tasks = taskData.map((task) => Task.fromJson(task)).toList();
       notifyListeners();
     } else {
-      throw Exception('Failed to load tasks! \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to load tasks! \n Error: $errorMessage');
     }
   }
 
@@ -111,7 +115,9 @@ class TaskProvider extends ChangeNotifier {
       tasks.add(newTask);
       notifyListeners();
     } else {
-      throw Exception('Failed to add task! \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to add task! \n Error: $errorMessage');
     }
   }
 
@@ -123,7 +129,9 @@ class TaskProvider extends ChangeNotifier {
       tasks.removeWhere((task) => task.id == taskId);
       notifyListeners();
     } else {
-      throw Exception('Failed to remove task!  \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to remove task!  \n Error: $errorMessage');
     }
   }
 
@@ -138,7 +146,9 @@ class TaskProvider extends ChangeNotifier {
       tasks[taskIndex] = newTaskDatas;
       notifyListeners();
     } else {
-      throw Exception('Failed to update task! \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to update task! \n Error: $errorMessage');
     }
   }
 
@@ -154,7 +164,9 @@ class TaskProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       fetchAllTasks();
     } else {
-      throw Exception('Failed to update task! \n Error: ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to update task! \n Error: $errorMessage');
     }
   }
 }

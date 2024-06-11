@@ -62,7 +62,9 @@ class OwnerProvider extends ChangeNotifier {
       owners = ownerData.map((item) => Owner.fromJson(item)).toList();
       notifyListeners();
     } else {
-      throw Exception('Failed to load Owners! \n${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to load Owners! \n $errorMessage');
     }
   }
 
@@ -78,7 +80,9 @@ class OwnerProvider extends ChangeNotifier {
       owners.add(owner);
       notifyListeners();
     } else {
-      throw Exception('Failed to add owner!\n ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to add owner!\n $errorMessage');
     }
   }
 
@@ -90,7 +94,9 @@ class OwnerProvider extends ChangeNotifier {
       owners.removeWhere((owner) => owner.id == ownerId);
       notifyListeners();
     } else {
-      throw Exception('Failed to remove owner!\n ${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to remove owner!\n $errorMessage');
     }
   }
 
@@ -105,7 +111,9 @@ class OwnerProvider extends ChangeNotifier {
       owners[ownerIndex] = newOwnerDatas;
       notifyListeners();
     } else {
-      throw Exception('Failed to update owner! \n${response.body}');
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to update owner! \n $errorMessage');
     }
   }
 }
