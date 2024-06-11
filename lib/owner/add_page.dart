@@ -40,7 +40,7 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                           minTime: DateTime.utc(2015, 1, 1),
                           maxTime: DateTime.now(), onConfirm: (date) {
                             setState(() {
-                              birthDate = DateFormat('dd/MM/yyyy').format(date);
+                              birthDate = DateFormat('yyyy-MM-dd').format(date);
                             });
                           });
                       },
@@ -50,8 +50,9 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                 ),
                 ElevatedButton(
                     onPressed: () {
+                      DateTime parsedBirthDate = DateTime.parse(birthDate);
                       final owner = Owner.withoutId(
-                          name: _nameControlle.text, birthDate: birthDate);
+                          name: _nameControlle.text, birthDate: DateFormat('dd-MM-yyyy').format(parsedBirthDate));
 
                       ownerCurrentProvider.addOwner(owner).then((_) {
                         Navigator.pop(context);

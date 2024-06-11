@@ -41,9 +41,9 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              
-              ElevatedButton(
-                child: const Text('Owners', style: TextStyle(fontSize: 30)),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.account_circle_outlined, size: 45),
+                label: const Text('Owners', style: TextStyle(fontSize: 30)),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -54,11 +54,10 @@ class MyHomePage extends StatelessWidget {
                               })));
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  child: const Text("Tasks", style: TextStyle(fontSize: 30)),
+              const SizedBox(height: 25),
+              ElevatedButton.icon(
+                  icon: const Icon(Icons.assignment_turned_in_outlined, size: 45),
+                  label: const Text("Tasks", style: TextStyle(fontSize: 30)),
                   onPressed: () {
                     Navigator.push(
                         context,

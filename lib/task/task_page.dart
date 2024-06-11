@@ -110,7 +110,7 @@ class _TaskPageState extends State<TaskPage> {
                             context: context, 
                             builder: (context) => AlertDialog(
                               title: const Text("Failed to Completed Task!"),
-                              content: Text(error),
+                              content: Text('$error'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
