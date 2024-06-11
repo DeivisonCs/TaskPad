@@ -75,6 +75,15 @@ class _TaskPageState extends State<TaskPage> {
                 const SizedBox(width: 7),
                 Text(currentTask.isComplete=='true'?"Completed":"Pending"),
             ]),
+            const SizedBox(height: 13),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                const Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 7),
+                Text(currentTask.deadline)
+              ]
+            ),
 
             const SizedBox(height: 80), 
                 currentTask.isComplete=="false"?
