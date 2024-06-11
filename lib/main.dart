@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TaskProvider>(create: (_)=> TaskProvider())
       ],
       child: MaterialApp(
-          title: 'First App Flutter',
+          title: 'TaskPad',
           theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
               useMaterial3: true),
@@ -38,12 +38,12 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: const Text("TaskPad")),
         body: Center(
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                  child: ElevatedButton(
-                child: const Text('Owners'),
+              
+              ElevatedButton(
+                child: const Text('Owners', style: TextStyle(fontSize: 30)),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -53,13 +53,12 @@ class MyHomePage extends StatelessWidget {
                                 return const ListOwnersPage();
                               })));
                 },
-              )),
-              const SizedBox(
-                width: 10,
               ),
-              Expanded(
-                child: ElevatedButton(
-                  child: const Text("Tasks"),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                  child: const Text("Tasks", style: TextStyle(fontSize: 30)),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -71,7 +70,6 @@ class MyHomePage extends StatelessWidget {
                                 )));
                   },
                 ),
-              )
             ],
           ),
         ));
