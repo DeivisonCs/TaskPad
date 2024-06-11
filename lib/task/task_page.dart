@@ -1,3 +1,4 @@
+import 'package:ads_atividade_2/components/colored_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,15 +31,90 @@ class _TaskPageState extends State<TaskPage> {
     final Owner taskOwner = ownerProvider.owners.firstWhere((owner) => owner.id == currentTask.idOwner);
 
     return Scaffold(
-      appBar: AppBar(title: Text(currentTask.title)),
-      body: Column(
-        children: [
-          Text(taskOwner.name),
-          Text(currentTask.description.toString()),
-          Text(currentTask.isComplete),
-        ],
-      )
+      appBar: AppBar(title: const Text("TaskPad")),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20), 
+            Text(currentTask.title, style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold 
+            )),
+            Text("Owner: ${taskOwner.name}", style: const TextStyle(
+              fontSize: 15
+            )),
+            const SizedBox(height: 80),
 
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: 10),
+                Text("Description: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 40),
+                Text(currentTask.description.toString()),
+                const SizedBox(height: 80), 
+              ]
+            ),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 20),
+                const Text('Status: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 13),
+                ColoredCircle(color: currentTask.isComplete=='true'?Colors.green:Colors.red),
+                const SizedBox(width: 7),
+                Text(currentTask.isComplete=='true'?"Completed":"Pending"),
+            ]),
+
+            const SizedBox(height: 80), 
+                currentTask.isComplete=="false"?
+                ElevatedButton(
+                  onPressed: () => {
+                    taskprovider.completeTask(currentTask.id)
+                      .then((_) => {
+                          showDialog(
+                            context: context, 
+                            builder: (context) => AlertDialog(
+                              title: const Text("Task Completed!"),
+                              content: Text("Task '${currentTask.title}' succesfully completed!"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("Ok"),
+                                )
+                              ],
+                            )
+                            )
+                      }).catchError((error) => {
+                        showDialog(
+                            context: context, 
+                            builder: (context) => AlertDialog(
+                              title: const Text("Failed to Completed Task!"),
+                              content: Text('Error: $error'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("Ok"),
+                                )
+                              ],
+                            )
+                            )
+                      })
+                  },child: const Text("Complete Task")
+                  ):const Row()
+          ],
+        ),
+      )
     );
   }
 }

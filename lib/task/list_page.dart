@@ -6,6 +6,8 @@ import 'package:ads_atividade_2/task/task_api.dart';
 import 'package:ads_atividade_2/task/add_page.dart';
 import 'package:ads_atividade_2/task/task_page.dart';
 
+import 'package:ads_atividade_2/components/colored_circle.dart';
+
 class ListTasksPage extends StatefulWidget {
   final int ownerId;
   const ListTasksPage({super.key, required this.ownerId});
@@ -107,24 +109,5 @@ class _ListTasksPageState extends State<ListTasksPage> {
   void navigateToTaskPage(int taskId) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => TaskPage(taskId: taskId)));
-  }
-}
-
-
-class ColoredCircle extends StatelessWidget{
-  final Color color;
-  
-  const ColoredCircle({super.key, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 15,
-      height: 15,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
-    );
   }
 }

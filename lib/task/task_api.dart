@@ -138,7 +138,23 @@ class TaskProvider extends ChangeNotifier {
       tasks[taskIndex] = newTaskDatas;
       notifyListeners();
     } else {
-      throw Exception('Failed to update task!');
+      throw Exception('Failed to update task! \n Error: ${response.body}');
+    }
+  }
+
+  Future<void> completeTask(int taskId) async {
+    final url = 'http://$localhost:3000/task/update/$taskId';
+
+    Map<String, String> newStatus = {'isComplete': 'true'};
+
+    final response = await http.put(Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(newStatus));
+
+    if (response.statusCode == 200) {
+      fetchAllTasks();
+    } else {
+      throw Exception('Failed to update task! \n Error: ${response.body}');
     }
   }
 }
