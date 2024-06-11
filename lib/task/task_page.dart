@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:ads_atividade_2/owner/owner_api.dart';
 import 'package:ads_atividade_2/task/task_api.dart';
+import 'package:ads_atividade_2/task/edit_page.dart';
 
 class TaskPage extends StatefulWidget {
   final int taskId;
@@ -123,7 +124,16 @@ class _TaskPageState extends State<TaskPage> {
                   ):const Row()
           ],
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.edit), onPressed: () => navigateToEdit(currentTask.id)),
+    );
+  }
+
+  void navigateToEdit(int taskId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditTaskPage(taskId: taskId,))
     );
   }
 }
