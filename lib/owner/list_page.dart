@@ -25,10 +25,8 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
     final ownerProvider = Provider.of<OwnerProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(title: const Text("TaskPad")),
-        body: ownerProvider.owners.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
+        appBar: AppBar(title: const Text("Owners")),
+        body:ListView.builder(
               itemCount: ownerProvider.owners.length,
               itemBuilder: (context, index) {
                 final owner = ownerProvider.owners[index];

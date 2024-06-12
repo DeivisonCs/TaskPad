@@ -25,7 +25,8 @@ class _ListTasksPageState extends State<ListTasksPage> {
     if (widget.ownerId == -1) {
       Provider.of<TaskProvider>(context, listen: false).fetchAllTasks();
     } else {
-      Provider.of<TaskProvider>(context, listen: false).fetchOwnerTasks(widget.ownerId);
+      Provider.of<TaskProvider>(context, listen: false)
+          .fetchOwnerTasks(widget.ownerId);
     }
     Provider.of<OwnerProvider>(context, listen: false).fetchAllOwners();
   }
@@ -36,70 +37,124 @@ class _ListTasksPageState extends State<ListTasksPage> {
     final ownerProvider = Provider.of<OwnerProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("TaskPad")),
+      appBar: AppBar(
+          title: widget.ownerId == -1
+              ? const Text('Tasks')
+              : Text(
+                  '${ownerProvider.owners.firstWhere((owner) => owner.id == widget.ownerId).name} Tasks')),
       body: taskProvider.tasks.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: taskProvider.tasks.length,
-              itemBuilder: (context, index) {
-                final task = taskProvider.tasks[index];
+          ? Stack(
+            children: [
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavigationBar(
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.all_inbox_rounded), label: 'All'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.verified_outlined),
+                          label: 'Completed'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.access_time), label: 'Pending')
+                    ],
+                    onTap: (index) {
+                      if (index == 0) taskProvider.fetchAllTasks();
+                      if (index == 1) taskProvider.fetchCompletedTask();
+                      if (index == 2) taskProvider.fetchPendingTask();
+                    },
+                  )),
+              Positioned(
+                  bottom: 70.0,
+                  right: 20.0,
+                  child: FloatingActionButton(
+                      child: const Icon(Icons.add),
+                      onPressed: () => navigateToAdd()))
+            ],
+          )
+          : Stack(children: [
+              ListView.builder(
+                itemCount: taskProvider.tasks.length,
+                itemBuilder: (context, index) {
+                  final task = taskProvider.tasks[index];
 
-                return ListTile(
-                    title: InkWell(
-                      onTap: () => navigateToTaskPage(task.id),
-                      child: Text(
-                        task.title,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)
-                      )
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "Owner: ${ownerProvider.owners.firstWhere((item) => item.id == task.idOwner).name}",
-                                  style: const TextStyle(fontSize: 16)),
-                              Text("Deadline: ${task.deadline}",
-                                  style: const TextStyle(fontSize: 16))
-                            ]),
-                            Row(
+                  return ListTile(
+                      title: InkWell(
+                          onTap: () => navigateToTaskPage(task.id),
+                          child: Text(task.title,
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold))),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ColoredCircle(color: task.isComplete=='true'?Colors.green:Colors.red),
-                                const SizedBox(width: 7),
-                                Text(task.isComplete=='true'?'Completed':'Pending'),
-                                const SizedBox(height: 20),
-                              ],
-                            )
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
+                                Text(
+                                    "Owner: ${ownerProvider.owners.firstWhere((item) => item.id == task.idOwner).name}",
+                                    style: const TextStyle(fontSize: 16)),
+                                Text("Deadline: ${task.deadline}",
+                                    style: const TextStyle(fontSize: 16))
+                              ]),
+                          Row(
+                            children: [
+                              ColoredCircle(
+                                  color: task.isComplete == 'true'
+                                      ? Colors.green
+                                      : Colors.red),
+                              const SizedBox(width: 7),
+                              Text(task.isComplete == 'true'
+                                  ? 'Completed'
+                                  : 'Pending'),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ],
+                      ),
+                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                         IconButton(
                             icon: const Icon(Icons.edit),
-                            onPressed: () => navigateToEdit(task.id)
-                          ),
+                            onPressed: () => navigateToEdit(task.id)),
                         IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () => taskProvider.removeTask(task.id))
-                      ]
-                    )
-                    );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add), onPressed: () => navigateToAdd()),
+                      ]));
+                },
+              ),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavigationBar(
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.all_inbox_rounded), label: 'All'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.verified_outlined),
+                          label: 'Completed'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.access_time), label: 'Pending')
+                    ],
+                    onTap: (index) {
+                      if (index == 0) taskProvider.fetchAllTasks();
+                      if (index == 1) taskProvider.fetchCompletedTask();
+                      if (index == 2) taskProvider.fetchPendingTask();
+                    },
+                  )),
+              Positioned(
+                  bottom: 70.0,
+                  right: 20.0,
+                  child: FloatingActionButton(
+                      child: const Icon(Icons.add),
+                      onPressed: () => navigateToAdd()))
+            ]),
     );
   }
 
   void navigateToEdit(int taskId) {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditTaskPage(taskId: taskId,))
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditTaskPage(
+                  taskId: taskId,
+                )));
   }
 
   void navigateToAdd() {
@@ -108,7 +163,7 @@ class _ListTasksPageState extends State<ListTasksPage> {
   }
 
   void navigateToTaskPage(int taskId) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => TaskPage(taskId: taskId)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TaskPage(taskId: taskId)));
   }
 }

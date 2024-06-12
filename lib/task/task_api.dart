@@ -103,6 +103,40 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchCompletedTask() async {
+    const url = 'http://$localhost:3000/task/list?isComplete=true';
+    final response = await http.get(Uri.parse(url));
+
+    if(response.statusCode==200){
+      final data = json.decode(response.body);
+      final List<dynamic> ownerData = data['tarefas'];
+
+      tasks = ownerData.map((item) => Task.fromJson(item)).toList();
+      notifyListeners();
+    } else {
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to load tasks! \n Error: $errorMessage');
+    }
+  }
+
+  Future<void> fetchPendingTask() async {
+    const url = 'http://$localhost:3000/task/list?isComplete=false';
+    final response = await http.get(Uri.parse(url));
+
+    if(response.statusCode==200){
+      final data = json.decode(response.body);
+      final List<dynamic> ownerData = data['tarefas'];
+
+      tasks = ownerData.map((item) => Task.fromJson(item)).toList();
+      notifyListeners();
+    } else {
+      final errorBody = json.decode(response.body);
+      final errorMessage = errorBody['message'];
+      throw Exception('Failed to load tasks! \n Error: $errorMessage');
+    }
+  }
+
   Future<void> addTask(Task newTask) async {
     const url = 'http://$localhost:3000/task/add';
     final response = await http.post(

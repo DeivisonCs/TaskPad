@@ -104,11 +104,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
                 ElevatedButton(
                     onPressed: () {
+                      DateTime parsedBirthDate = DateTime.parse(deadline);
                       final task = Task.withoutId(
                           idOwner: taskOwner,
                           title: _titleController.text,
                           description: _descriptionController.text,
-                          deadline: deadline,
+                          deadline: DateFormat('dd-MM-yyyy').format(parsedBirthDate),
                           isComplete: taskStatus);
 
                       taskCurrentProvider.addTask(task).then((_) {
