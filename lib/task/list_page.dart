@@ -45,6 +45,7 @@ class _ListTasksPageState extends State<ListTasksPage> {
       body: taskProvider.tasks.isEmpty
           ? Stack(
             children: [
+              Center(child: FloatingActionButton(child: const Icon(Icons.add), onPressed: () => navigateToAdd())),
               Align(
                   alignment: Alignment.bottomCenter,
                   child: BottomNavigationBar(
@@ -62,13 +63,7 @@ class _ListTasksPageState extends State<ListTasksPage> {
                       if (index == 1) taskProvider.fetchCompletedTask();
                       if (index == 2) taskProvider.fetchPendingTask();
                     },
-                  )),
-              Positioned(
-                  bottom: 70.0,
-                  right: 20.0,
-                  child: FloatingActionButton(
-                      child: const Icon(Icons.add),
-                      onPressed: () => navigateToAdd()))
+                  ))
             ],
           )
           : Stack(children: [

@@ -26,7 +26,12 @@ class _ListOwnersPageState extends State<ListOwnersPage> {
 
     return Scaffold(
         appBar: AppBar(title: const Text("Owners")),
-        body:ListView.builder(
+        body: ownerProvider.owners.isEmpty?
+          Center(child: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () => navigateToAdd()
+          ),)
+        :ListView.builder(
               itemCount: ownerProvider.owners.length,
               itemBuilder: (context, index) {
                 final owner = ownerProvider.owners[index];
